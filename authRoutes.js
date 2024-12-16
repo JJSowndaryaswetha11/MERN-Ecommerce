@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Register route
 router.post('/register', async (req, res) => {
-  const { name, email, password } = req.body;
+  const { username, email, password } = req.body; // Changed 'name' to 'username'
 
   try {
     // Check if email already exists
@@ -14,11 +14,11 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'Email already exists' });
     }
 
-    // Create new user without password hashing
+    // Create new user (no password hashing for simplicity)
     const newUser = new User({
-      name,
+      username, // Store the username
       email,
-      password,  // Store password as plain text (not secure)
+      password, // Store password as plain text (not secure, consider hashing it)
     });
 
     // Save the user to the database
@@ -31,6 +31,8 @@ router.post('/register', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// Login route
 router.post('/login', (req, res) => {
   const { usernameOrEmail, password } = req.body;
 
@@ -71,3 +73,4 @@ router.post('/login', (req, res) => {
 });
 
 module.exports = router;
+
